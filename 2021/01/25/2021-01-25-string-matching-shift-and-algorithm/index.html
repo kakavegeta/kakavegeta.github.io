@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="Today is another string matching algorithm, shift-and, which is efficient, elegant, and simple! Behind this algorithm is bit manipulation. Consider following text(in length M) and pattern(in length N)">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Shift-And Algorithm">
+<meta property="og:url" content="https://kakavegeta.github.io/2021/01/25/2021-01-25-string-matching-shift-and-algorithm/index.html">
+<meta property="og:site_name" content="kakavegeta">
+<meta property="og:description" content="Today is another string matching algorithm, shift-and, which is efficient, elegant, and simple! Behind this algorithm is bit manipulation. Consider following text(in length M) and pattern(in length N)">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-01-25T05:00:00.000Z">
+<meta property="article:modified_time" content="2023-08-01T22:30:51.487Z">
+<meta property="article:author" content="Vegeka">
+<meta property="article:tag" content="string matching">
+<meta property="article:tag" content="algorithm">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>Shift-And Algorithm</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/tags/">Tag</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2021/03/27/2021-03-27-template-class-function/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2021/01/24/2021-01-24-string-matching-sunday-algorithm/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://kakavegeta.github.io/2021/01/25/2021-01-25-string-matching-shift-and-algorithm/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://kakavegeta.github.io/2021/01/25/2021-01-25-string-matching-shift-and-algorithm/&text=Shift-And Algorithm"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://kakavegeta.github.io/2021/01/25/2021-01-25-string-matching-shift-and-algorithm/&title=Shift-And Algorithm"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://kakavegeta.github.io/2021/01/25/2021-01-25-string-matching-shift-and-algorithm/&is_video=false&description=Shift-And Algorithm"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Shift-And Algorithm&body=Check out this article: https://kakavegeta.github.io/2021/01/25/2021-01-25-string-matching-shift-and-algorithm/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://kakavegeta.github.io/2021/01/25/2021-01-25-string-matching-shift-and-algorithm/&title=Shift-And Algorithm"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://kakavegeta.github.io/2021/01/25/2021-01-25-string-matching-shift-and-algorithm/&title=Shift-And Algorithm"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://kakavegeta.github.io/2021/01/25/2021-01-25-string-matching-shift-and-algorithm/&title=Shift-And Algorithm"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://kakavegeta.github.io/2021/01/25/2021-01-25-string-matching-shift-and-algorithm/&title=Shift-And Algorithm"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://kakavegeta.github.io/2021/01/25/2021-01-25-string-matching-shift-and-algorithm/&name=Shift-And Algorithm&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://kakavegeta.github.io/2021/01/25/2021-01-25-string-matching-shift-and-algorithm/&t=Shift-And Algorithm"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        Shift-And Algorithm
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">Vegeka</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2021-01-25T05:00:00.000Z" class="dt-published" itemprop="datePublished">2021-01-25</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/Algorithm/">Algorithm</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/algorithm/" rel="tag">algorithm</a>, <a class="p-category" href="/tags/string-matching/" rel="tag">string matching</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>Today is another string matching algorithm, shift-and, which is efficient, elegant, and simple! Behind this algorithm is bit manipulation.</p>
+<p>Consider following text(in length M) and pattern(in length N):</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">T: abcdefegdjkl</span><br><span class="line">P: defegd</span><br></pre></td></tr></table></figure>
+
+<p>Shift-and algorithm firstly encodes pattern string into a table, where each distinct character is mapped into an int value. Each value represents the position of the corresponding character’s appearance. Formally, <code>d</code> maps each char into a N-bit value, $d_{N-1}, d_{N-2}, d_{N-3}, … d_0$. For each bit, 1 if the character at that index(0-based) and 0 if not.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">d[&#x27;d&#x27;] = 100001</span><br><span class="line">d[&#x27;e&#x27;] = 001010</span><br><span class="line">d[&#x27;f&#x27;] = 000100</span><br><span class="line">d[&#x27;g&#x27;] = 010000</span><br></pre></td></tr></table></figure>
+
+<p>After encoding pattern, we iterate each character in text. Here comes the most magic part of shift-and algorithm, simply one line code:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">// p is initially 0</span><br><span class="line">For each character T[i] in text, update p:</span><br><span class="line">p = (p &lt;&lt; 1 | 1) &amp; d[T[i]]</span><br></pre></td></tr></table></figure>
+
+<p>What <code>p</code> is? It is the state of matching at T[i]. Too abstract, let’s finish matching one by one step.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line">^</span><br><span class="line">a b c d e f e g d j k l</span><br><span class="line">d[&#x27;a&#x27;]: 0 0 0 0 0 0</span><br><span class="line">p     : 0 0 0 0 0 0</span><br><span class="line"></span><br><span class="line">  ^</span><br><span class="line">a b c d e f e g d j k l</span><br><span class="line">d[&#x27;b&#x27;]: 0 0 0 0 0 0</span><br><span class="line">p     : 0 0 0 0 0 0</span><br><span class="line"></span><br><span class="line">    ^</span><br><span class="line">a b c d e f e g d j k l</span><br><span class="line">d[&#x27;c&#x27;]: 0 0 0 0 0 0</span><br><span class="line">p     : 0 0 0 0 0 0</span><br><span class="line"></span><br><span class="line">      ^</span><br><span class="line">a b c d e f e g d j k l</span><br><span class="line">d[&#x27;d&#x27;]            : 1 0 0 0 0 1</span><br><span class="line">p&lt;&lt;1 | 1          : 0 0 0 0 0 1</span><br><span class="line">p&lt;&lt;1 | 1 &amp; d[&#x27;d&#x27;] : 0 0 0 0 0 1</span><br><span class="line"></span><br><span class="line">        ^</span><br><span class="line">a b c d e f e g d j k l</span><br><span class="line">d[&#x27;e&#x27;]            : 0 0 1 0 1 0</span><br><span class="line">p&lt;&lt;1 | 1          : 0 0 0 0 1 1</span><br><span class="line">p&lt;&lt;1 | 1 &amp; d[&#x27;e&#x27;] : 0 0 0 0 1 0</span><br><span class="line"></span><br><span class="line">          ^</span><br><span class="line">a b c d e f e g d j k l</span><br><span class="line">d[&#x27;f&#x27;]            : 0 0 0 1 0 0</span><br><span class="line">p&lt;&lt;1 | 1          : 0 0 0 1 0 1</span><br><span class="line">p&lt;&lt;1 | 1 &amp; d[&#x27;e&#x27;] : 0 0 0 1 0 0</span><br><span class="line"></span><br><span class="line">            ^</span><br><span class="line">a b c d e f e g d j k l</span><br><span class="line">d[&#x27;e&#x27;]            : 0 0 1 0 1 0</span><br><span class="line">p&lt;&lt;1 | 1          : 0 0 1 0 0 1</span><br><span class="line">p&lt;&lt;1 | 1 &amp; d[&#x27;e&#x27;] : 0 0 1 0 0 0</span><br><span class="line"></span><br><span class="line">              ^</span><br><span class="line">a b c d e f e g d j k l</span><br><span class="line">d[&#x27;g&#x27;]            : 0 1 0 0 0 0</span><br><span class="line">p&lt;&lt;1 | 1          : 0 1 0 0 0 1</span><br><span class="line">p&lt;&lt;1 | 1 &amp; d[&#x27;e&#x27;] : 0 1 0 0 0 0</span><br><span class="line"></span><br><span class="line">                ^</span><br><span class="line">a b c d e f e g d j k l</span><br><span class="line">d[&#x27;d&#x27;]            : 1 0 0 0 0 1</span><br><span class="line">p&lt;&lt;1 | 1          : 1 0 0 0 0 1</span><br><span class="line">p&lt;&lt;1 | 1 &amp; d[&#x27;e&#x27;] : 1 0 0 0 0 1</span><br><span class="line"></span><br><span class="line">Finished</span><br></pre></td></tr></table></figure>
+
+<p>Now get what <code>p</code> means? Suppose <code>j-th</code> bit is 1(from right to left), it states a fact that, at T[i], pattern can be matched from <code>0</code> to <code>j</code>. Therefore, as long as $p_{N-1}$ is 1, we get answer!</p>
+<p>Here is the code:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">shift_and</span><span class="params">(<span class="type">const</span> <span class="type">char</span> *s, <span class="type">const</span> <span class="type">char</span> *t)</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> m = <span class="built_in">strlen</span>(s), n = <span class="number">0</span>;</span><br><span class="line">    <span class="type">int</span> d[<span class="number">256</span>] = &#123;<span class="number">0</span>&#125;;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">0</span>; t[i]; ++i, ++n) &#123;</span><br><span class="line">        d[t[i]] |= <span class="number">1</span> &lt;&lt; i;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> p = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">0</span>; s[i]; ++i) &#123;</span><br><span class="line">        p = (p &lt;&lt; <span class="number">1</span> | <span class="number">1</span>) &amp; d[s[i]];</span><br><span class="line">        <span class="keyword">if</span> (p &amp; (<span class="number">1</span> &lt;&lt; (n<span class="number">-1</span>))) <span class="keyword">return</span> i - n + <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/categories/">Category</a></li>
+        
+          <li><a href="/tags/">Tag</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://kakavegeta.github.io/2021/01/25/2021-01-25-string-matching-shift-and-algorithm/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://kakavegeta.github.io/2021/01/25/2021-01-25-string-matching-shift-and-algorithm/&text=Shift-And Algorithm"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://kakavegeta.github.io/2021/01/25/2021-01-25-string-matching-shift-and-algorithm/&title=Shift-And Algorithm"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://kakavegeta.github.io/2021/01/25/2021-01-25-string-matching-shift-and-algorithm/&is_video=false&description=Shift-And Algorithm"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Shift-And Algorithm&body=Check out this article: https://kakavegeta.github.io/2021/01/25/2021-01-25-string-matching-shift-and-algorithm/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://kakavegeta.github.io/2021/01/25/2021-01-25-string-matching-shift-and-algorithm/&title=Shift-And Algorithm"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://kakavegeta.github.io/2021/01/25/2021-01-25-string-matching-shift-and-algorithm/&title=Shift-And Algorithm"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://kakavegeta.github.io/2021/01/25/2021-01-25-string-matching-shift-and-algorithm/&title=Shift-And Algorithm"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://kakavegeta.github.io/2021/01/25/2021-01-25-string-matching-shift-and-algorithm/&title=Shift-And Algorithm"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://kakavegeta.github.io/2021/01/25/2021-01-25-string-matching-shift-and-algorithm/&name=Shift-And Algorithm&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://kakavegeta.github.io/2021/01/25/2021-01-25-string-matching-shift-and-algorithm/&t=Shift-And Algorithm"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2018-2023
+    Vegeka
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/tags/">Tag</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

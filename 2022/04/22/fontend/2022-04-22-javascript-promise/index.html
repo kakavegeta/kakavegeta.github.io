@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="What is PromiseOfficial definition: A Promise is an object representing the eventual completion or failure of an asynchronous operation. To be brief, it makes possible to schedule callbacks elegantly,">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Interpret Promise">
+<meta property="og:url" content="https://kakavegeta.github.io/2022/04/22/fontend/2022-04-22-javascript-promise/index.html">
+<meta property="og:site_name" content="kakavegeta">
+<meta property="og:description" content="What is PromiseOfficial definition: A Promise is an object representing the eventual completion or failure of an asynchronous operation. To be brief, it makes possible to schedule callbacks elegantly,">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-04-22T04:00:00.000Z">
+<meta property="article:modified_time" content="2023-08-02T00:00:04.452Z">
+<meta property="article:author" content="Vegeka">
+<meta property="article:tag" content="javascript">
+<meta property="article:tag" content="promise">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>Interpret Promise</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/tags/">Tag</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2022/04/24/marx/2022-04-24-capital-volume1-chapter4/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2022/04/17/marx/2022-04-17-capital-volume1-chapter1t3/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://kakavegeta.github.io/2022/04/22/fontend/2022-04-22-javascript-promise/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://kakavegeta.github.io/2022/04/22/fontend/2022-04-22-javascript-promise/&text=Interpret Promise"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://kakavegeta.github.io/2022/04/22/fontend/2022-04-22-javascript-promise/&title=Interpret Promise"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://kakavegeta.github.io/2022/04/22/fontend/2022-04-22-javascript-promise/&is_video=false&description=Interpret Promise"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Interpret Promise&body=Check out this article: https://kakavegeta.github.io/2022/04/22/fontend/2022-04-22-javascript-promise/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://kakavegeta.github.io/2022/04/22/fontend/2022-04-22-javascript-promise/&title=Interpret Promise"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://kakavegeta.github.io/2022/04/22/fontend/2022-04-22-javascript-promise/&title=Interpret Promise"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://kakavegeta.github.io/2022/04/22/fontend/2022-04-22-javascript-promise/&title=Interpret Promise"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://kakavegeta.github.io/2022/04/22/fontend/2022-04-22-javascript-promise/&title=Interpret Promise"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://kakavegeta.github.io/2022/04/22/fontend/2022-04-22-javascript-promise/&name=Interpret Promise&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://kakavegeta.github.io/2022/04/22/fontend/2022-04-22-javascript-promise/&t=Interpret Promise"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#What-is-Promise"><span class="toc-number">1.</span> <span class="toc-text">What is Promise</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#How-Promise-works"><span class="toc-number">2.</span> <span class="toc-text">How Promise works</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Constructor"><span class="toc-number">2.1.</span> <span class="toc-text">Constructor</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Promise-then-and-Chaining"><span class="toc-number">2.2.</span> <span class="toc-text">Promise.then() and Chaining</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Promise-resolve"><span class="toc-number">2.3.</span> <span class="toc-text">Promise.resolve()</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Implementation"><span class="toc-number">3.</span> <span class="toc-text">Implementation</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Constructor-1"><span class="toc-number">3.1.</span> <span class="toc-text">Constructor</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Promise-prototype-then"><span class="toc-number">3.2.</span> <span class="toc-text">Promise.prototype.then()</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Promise-Resolution-Procedure"><span class="toc-number">3.3.</span> <span class="toc-text">Promise Resolution Procedure</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Conclusion"><span class="toc-number">4.</span> <span class="toc-text">Conclusion</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Relative-Readings"><span class="toc-number">5.</span> <span class="toc-text">Relative Readings</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        Interpret Promise
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">Vegeka</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2022-04-22T04:00:00.000Z" class="dt-published" itemprop="datePublished">2022-04-22</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/Frontend/">Frontend</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/javascript/" rel="tag">javascript</a>, <a class="p-category" href="/tags/promise/" rel="tag">promise</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h1 id="What-is-Promise"><a href="#What-is-Promise" class="headerlink" title="What is Promise"></a>What is Promise</h1><p>Official definition: A Promise is an object representing the eventual completion or failure of an asynchronous operation. To be brief, it makes possible to schedule callbacks elegantly, like an assembly line.<br><code>myPromise.then(action1).then(action2).then(action3).catch(handleRejection)</code></p>
+<p>A <code>Promise</code> could be in one of three states:</p>
+<ol>
+<li>pending: initial state, neither fulfilled or rejected.</li>
+<li>fulfilled: operation was completed successfully.</li>
+<li>rejected: operation failed.</li>
+</ol>
+<h1 id="How-Promise-works"><a href="#How-Promise-works" class="headerlink" title="How Promise works"></a>How Promise works</h1><h2 id="Constructor"><a href="#Constructor" class="headerlink" title="Constructor"></a>Constructor</h2><p>Syntax:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> <span class="title class_">Promise</span>(executor)</span><br><span class="line"></span><br><span class="line"><span class="comment">// executor:</span></span><br><span class="line"><span class="keyword">function</span>(<span class="params">resolve, rejec</span>) &#123;</span><br><span class="line">    <span class="comment">// some asynchronous operations</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// `resolve` and `reject` are functions whose names do not matter.</span></span><br></pre></td></tr></table></figure>
+
+<p>Demo:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// new Promise(executor)</span></span><br><span class="line"><span class="keyword">const</span> promise1 = <span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="title function_">resolve</span>(<span class="string">&quot;foo&quot;</span>);</span><br><span class="line">  &#125;, <span class="number">300</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">promise1.<span class="title function_">then</span>(<span class="function">(<span class="params">value</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(value);</span><br><span class="line">  <span class="comment">// expected output: &quot;foo&quot;</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(promise1);</span><br><span class="line"><span class="comment">// expected output: [object Promise]</span></span><br></pre></td></tr></table></figure>
+
+<p>At first I was confused since it appears that <code>resolve</code> passed to constructor has some association with <code>Promise.then</code> method. But this is wrong: they own no ties when executing. <code>resolve</code> in constructor is immediately called(sync) when creating a new <code>Promise</code> object, whereas handler passed to <code>Promise.then</code> might be called later(async). <code>executor</code>, or <code>resolve</code>&#x2F;<code>reject</code>, is used to <strong>set the state</strong> of <code>Promise</code>, whereas the handler passed to <code>Promise.then</code> will <strong>react to the state</strong> of <code>Promise</code> <a href="#id1">[1]</a><a id='id01'/></p>
+<h2 id="Promise-then-and-Chaining"><a href="#Promise-then-and-Chaining" class="headerlink" title="Promise.then() and Chaining"></a>Promise.then() and Chaining</h2><p>Syntax:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">p.<span class="title function_">then</span>(onFulfilled[, onRejected]);</span><br><span class="line"></span><br><span class="line">p.<span class="title function_">then</span>(<span class="function"><span class="params">value</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// fulfillment</span></span><br><span class="line">&#125;, <span class="function"><span class="params">reason</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// rejection</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>Demo:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> promise1 = <span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="title function_">resolve</span>(<span class="string">&quot;Success!&quot;</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">promise1.<span class="title function_">then</span>(<span class="function">(<span class="params">value</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(value);</span><br><span class="line">  <span class="comment">// expected output: &quot;Success!&quot;</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p><code>Promise.then()</code> is the most important part. It takes up two functions. <code>onFulfilled</code> will be called when the <code>Promise</code> is fulfilled, take the <code>fulfillment value</code> from the <code>Promise</code>, and return a new <code>Promise</code> which can be chained. <code>onRejected</code> will be called if <code>Promise</code> is rejected. In the demo, string <code>Success!</code> is the <code>fulfillment value</code> of <code>promise1</code>, and is printed when <code>onFulfilled</code> is called in <code>.then()</code>. For more details, see <a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/then#return_value">MDN docs</a>.</p>
+<p>Chaining is one essential usage of <code>Promise</code>. See an example:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">p.<span class="title function_">then</span>(action1).<span class="title function_">then</span>(action2).<span class="title function_">then</span>(action3).<span class="title function_">then</span>(action4).<span class="title function_">catch</span>(errHandler);</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">(((((Promise), PromiseA),  PromiseB),  PromiseC),  PromiseD)</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">(((((Promise)-&gt; action1) -&gt; action2) -&gt; action3) -&gt; action4)</span></span><br><span class="line"><span class="comment">           ((((PromiseA) -&gt; action2) -&gt; action3) -&gt; action4)</span></span><br><span class="line"><span class="comment">                        (((PromiseB) -&gt; action3) -&gt; action4)</span></span><br><span class="line"><span class="comment">                                     ((PromiseC) -&gt; action4)</span></span><br><span class="line"><span class="comment">                                                  (PromiseD)</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+
+<p>The promises of a chain are initialized as a first-in-first-out queue: tasks enqueued first are excuted first. When a promise&#x2F;task is handled, it gets popped, and a new generated promise gets enqueued.</p>
+<h2 id="Promise-resolve"><a href="#Promise-resolve" class="headerlink" title="Promise.resolve()"></a>Promise.resolve()</h2><p>Syntax:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Promise</span>.<span class="title function_">resolve</span>(value);</span><br></pre></td></tr></table></figure>
+
+<p>Demo:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Promise</span>.<span class="title function_">resolve</span>(<span class="string">&quot;Success&quot;</span>).<span class="title function_">then</span>(</span><br><span class="line">  <span class="keyword">function</span> (<span class="params">value</span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(value); <span class="comment">// &quot;Success&quot;</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="keyword">function</span> (<span class="params">value</span>) &#123;</span><br><span class="line">    <span class="comment">// not called</span></span><br><span class="line">  &#125;</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<p><code>Promise.resolve()</code> returns a resolved <code>Promise</code> with given value. If value is a promise, it will be returned. If value is a “thenable” object, the returned promise will keep the “thenable”. Otherwise return a promise fulfilled with the value. <a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/resolve">MDN docs</a> gives more details.</p>
+<h1 id="Implementation"><a href="#Implementation" class="headerlink" title="Implementation"></a>Implementation</h1><p>Now let’s implement one simple <code>Promise</code>. Do not intent to design a perfect one which strictly follow the Promises&#x2F;A+ standard, but aim for better interpretation.</p>
+<h2 id="Constructor-1"><a href="#Constructor-1" class="headerlink" title="Constructor"></a>Constructor</h2><p>Constructor receives parameter <code>executor</code>, and <code>executor</code> receives <code>resolve/reject</code> function which will be immediately executed. <code>reolve/reject</code> will change the state of promise. <code>onFulfilledQueue/onRejectedQueue</code> stores asynchronous <code>onFulfilled/onRejected</code> operations from <code>Promise.prototype.then()</code> as promise is in pending state, and will be executed as long as promise’s state become fulfilled&#x2F;rejected.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="variable constant_">PENDING</span> = <span class="string">&quot;pending&quot;</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="variable constant_">FULFILLED</span> = <span class="string">&quot;fulfilled&quot;</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="variable constant_">REJECTED</span> = <span class="string">&quot;rejected&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> <span class="title class_">Promise</span> = <span class="keyword">function</span> (<span class="params">executor</span>) &#123;</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">state</span> = <span class="string">&quot;pending&quot;</span>;</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">onFulfilledQueue</span> = [];</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">onRejectedQueue</span> = [];</span><br><span class="line">  <span class="keyword">var</span> _this = <span class="variable language_">this</span>;</span><br><span class="line">  <span class="keyword">function</span> <span class="title function_">resolve</span>(<span class="params">value</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (_this.<span class="property">state</span> === <span class="variable constant_">PENDING</span>) &#123;</span><br><span class="line">      _this.<span class="property">state</span> = <span class="variable constant_">FULFILLED</span>;</span><br><span class="line">      _this.<span class="property">value</span> = value;</span><br><span class="line">      _this.<span class="property">onFulfilledQueue</span>.<span class="title function_">forEach</span>(<span class="function">(<span class="params">fn</span>) =&gt;</span> <span class="title function_">fn</span>(value));</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">function</span> <span class="title function_">reject</span>(<span class="params">reason</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> ((_this.<span class="property">state</span> = <span class="variable constant_">PENDING</span>)) &#123;</span><br><span class="line">      _this.<span class="property">state</span> = <span class="variable constant_">REJECTED</span>;</span><br><span class="line">      _this.<span class="property">reason</span> = reason;</span><br><span class="line">      _this.<span class="property">onRejectedQueue</span>.<span class="title function_">forEach</span>(<span class="function">(<span class="params">fn</span>) =&gt;</span> <span class="title function_">fn</span>(reason));</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="title function_">executor</span>(resolve, reject);</span><br><span class="line">  &#125; <span class="keyword">catch</span> (err) &#123;</span><br><span class="line">    <span class="title function_">reject</span>(err);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Promise-prototype-then"><a href="#Promise-prototype-then" class="headerlink" title="Promise.prototype.then()"></a>Promise.prototype.then()</h2><p><code>Promise.prototype.then()</code> appears more complicated. It is a state machine, returning a new promise given current promise’s state.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Promise</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">then</span> = <span class="keyword">function</span> (<span class="params">onFulfilled, onRejected</span>) &#123;</span><br><span class="line">  <span class="comment">// a. dealing with case: p.then(&#x27;a&#x27;).then(1, eor(&#x27;e&#x27;)), where onFulfilled &amp; onRejected are not function</span></span><br><span class="line">  onFulfilled =</span><br><span class="line">    <span class="keyword">typeof</span> onFulfilled === <span class="string">&quot;function&quot;</span> ? onFulfilled : <span class="function">(<span class="params">value</span>) =&gt;</span> value;</span><br><span class="line">  onRejected =</span><br><span class="line">    <span class="keyword">typeof</span> onRejected === <span class="string">&quot;function&quot;</span></span><br><span class="line">      ? onRejected</span><br><span class="line">      : <span class="function">(<span class="params">reason</span>) =&gt;</span> &#123;</span><br><span class="line">          <span class="keyword">throw</span> reason;</span><br><span class="line">        &#125;;</span><br><span class="line">  <span class="keyword">var</span> _this = <span class="variable language_">this</span>;</span><br><span class="line">  <span class="keyword">var</span> promise2 = <span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (_this.<span class="property">state</span> === <span class="variable constant_">FULFILLED</span>) &#123;</span><br><span class="line">      <span class="comment">// b. mimic microtask / async operation</span></span><br><span class="line">      <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">          <span class="keyword">let</span> x = <span class="title function_">onFulfilled</span>(_this.<span class="property">value</span>);</span><br><span class="line">          <span class="comment">// resolve returned value</span></span><br><span class="line">          <span class="title function_">resolvePromise</span>(promise2, x, resolve, reject);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">          <span class="title function_">reject</span>(e);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (_this.<span class="property">state</span> === <span class="variable constant_">REJECTED</span>) &#123;</span><br><span class="line">      <span class="comment">// mimic microtask / async operation</span></span><br><span class="line">      <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">          <span class="keyword">let</span> x = <span class="title function_">onRejected</span>(_this.<span class="property">reason</span>);</span><br><span class="line">          <span class="title function_">resolvePromise</span>(promise2, x, resolve, reject);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">          <span class="title function_">reject</span>(e);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (_this.<span class="property">state</span> === <span class="variable constant_">PENDING</span>) &#123;</span><br><span class="line">      <span class="comment">// c. push unexcuted tasks to onFulfilled/onRejected queue.</span></span><br><span class="line">      <span class="comment">// setTimeout mimic microtask</span></span><br><span class="line">      _this.<span class="property">onFulfilledQueue</span>.<span class="title function_">push</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">        <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">          <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">let</span> x = <span class="title function_">onFulfilled</span>(_this.<span class="property">value</span>);</span><br><span class="line">            <span class="title function_">resolvePromise</span>(promise2, x, resolve, reject);</span><br><span class="line">          &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">            <span class="title function_">reject</span>(e);</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">      &#125;);</span><br><span class="line">      _this.<span class="property">onRejectedQueue</span>.<span class="title function_">push</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">        <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">          <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">let</span> x = <span class="title function_">onRejected</span>(_this.<span class="property">reason</span>);</span><br><span class="line">            <span class="title function_">resolvePromise</span>(promise2, x, resolve, reject);</span><br><span class="line">          &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">            <span class="title function_">reject</span>(e);</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="keyword">return</span> promise2;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>a. The two lines deal with case when <code>onFulfilled/onRejected</code> are not functions. If an object gets passed, <code>Promise.ptorotype.then()</code> will simple return this object.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">onFulfilled =</span><br><span class="line">  <span class="keyword">typeof</span> onFulfilled === <span class="string">&quot;function&quot;</span> ? onFulfilled : <span class="function">(<span class="params">value</span>) =&gt;</span> value;</span><br><span class="line">onRejected =</span><br><span class="line">  <span class="keyword">typeof</span> onRejected === <span class="string">&quot;function&quot;</span></span><br><span class="line">    ? onRejected</span><br><span class="line">    : <span class="function">(<span class="params">err</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">throw</span> err;</span><br><span class="line">      &#125;;</span><br></pre></td></tr></table></figure>
+
+<p>b. Here <code>setTimeout()</code> mimics microtask. For how promise microtask works, see <a target="_blank" rel="noopener" href="https://javascript.info/microtask-queue">here</a></p>
+<p>c. As a promise keep pending state, all handlers(tasks) passed to <code>.then()</code> need to be queued. Once the state changed, tasks in <code>onFulFilledQueue</code> and <code>onRejectedQueue</code> are executed in order.</p>
+<h2 id="Promise-Resolution-Procedure"><a href="#Promise-Resolution-Procedure" class="headerlink" title="Promise Resolution Procedure"></a>Promise Resolution Procedure</h2><p><code>resolvePromise()</code> in <code>Promise.prototype.then()</code> illustrates the promise resolution procedure that is defined <a target="_blank" rel="noopener" href="https://promisesaplus.com/#the-promise-resolution-procedure">here</a>. The code in this part is mainly from <a target="_blank" rel="noopener" href="https://github.com/SuperTapir/Blog/issues/2">a great promise implementation</a>. <code>flag</code> ensures the resolution procedure only run once.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> resolvePromise = <span class="keyword">function</span> (<span class="params">promise2, x, resolve, reject</span>) &#123;</span><br><span class="line">  <span class="keyword">if</span> (promise2 === x) &#123;</span><br><span class="line">    <span class="title function_">reject</span>(<span class="keyword">new</span> <span class="title class_">TypeError</span>(<span class="string">&quot;Infinite Chaining!&quot;</span>));</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// Promise/A+ 2.3.3</span></span><br><span class="line">  <span class="keyword">if</span> ((x &amp;&amp; <span class="keyword">typeof</span> x === <span class="string">&quot;object&quot;</span>) || <span class="keyword">typeof</span> x === <span class="string">&quot;function&quot;</span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> flag = <span class="literal">false</span>;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">      <span class="keyword">let</span> then = x.<span class="property">then</span>;</span><br><span class="line">      <span class="keyword">if</span> (<span class="keyword">typeof</span> then === <span class="string">&quot;function&quot;</span>) &#123;</span><br><span class="line">        then.<span class="title function_">call</span>(</span><br><span class="line">          x,</span><br><span class="line">          <span class="function">(<span class="params">y</span>) =&gt;</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (flag) <span class="keyword">return</span>;</span><br><span class="line">            <span class="title function_">resolvePromise</span>(promise2, y, resolve, reject);</span><br><span class="line">            flag = <span class="literal">true</span>;</span><br><span class="line">          &#125;,</span><br><span class="line">          <span class="function">(<span class="params">r</span>) =&gt;</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (flag) <span class="keyword">return</span>;</span><br><span class="line">            <span class="title function_">reject</span>(r);</span><br><span class="line">            flag = <span class="literal">true</span>;</span><br><span class="line">          &#125;</span><br><span class="line">        );</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (flag) <span class="keyword">return</span>;</span><br><span class="line">        <span class="title function_">resolve</span>(x);</span><br><span class="line">        flag = <span class="literal">true</span>;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">      <span class="keyword">if</span> (flag) <span class="keyword">return</span>;</span><br><span class="line">      <span class="title function_">reject</span>(e);</span><br><span class="line">      flag = <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="title function_">resolve</span>(x);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1><p>This post takes me two days. Previously no idea came to me of diving into details of Promise, until last week optimizations were required, then I realized my poverty on Javascript’s asynchronous programming. This post mainly explains the mechanism of <code>Promise</code>, and implements one according Promises&#x2F;A+ standard. Here is <a href="/code/js/promise.js">complete code</a>, please install tester first <code>npm install -g promises-aplus-tests</code>, then run <code>promises-aplus-tests promise.js</code>.</p>
+<h1 id="Relative-Readings"><a href="#Relative-Readings" class="headerlink" title="Relative Readings"></a>Relative Readings</h1><p><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise - Javascript MDN</a></p>
+<p><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises">Using Promises - Javascript MDN</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.barretlee.com/blog/2014/09/29/cb-promise/">细嗅 Promise</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/YvetteLau/Blog/issues/2">Promise 的源码实现（完美符合 Promise&#x2F;A+规范)</a></p>
+<p><a target="_blank" rel="noopener" href="https://promisesaplus.com/">Promises&#x2F;A+</a></p>
+<p><a target="_blank" rel="noopener" href="https://javascript.info/promise-basics#:~:text=The%20constructor%20syntax%20for%20a,created%2C%20the%20executor%20runs%20automatically.">javascript.info</a></p>
+<hr/>
+<a id='id1'>[[1]](#id01)</a>[stackoverflow](https://stackoverflow.com/questions/31324110/why-does-the-promise-constructor-require-a-function-that-calls-resolve-when-co)
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/categories/">Category</a></li>
+        
+          <li><a href="/tags/">Tag</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#What-is-Promise"><span class="toc-number">1.</span> <span class="toc-text">What is Promise</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#How-Promise-works"><span class="toc-number">2.</span> <span class="toc-text">How Promise works</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Constructor"><span class="toc-number">2.1.</span> <span class="toc-text">Constructor</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Promise-then-and-Chaining"><span class="toc-number">2.2.</span> <span class="toc-text">Promise.then() and Chaining</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Promise-resolve"><span class="toc-number">2.3.</span> <span class="toc-text">Promise.resolve()</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Implementation"><span class="toc-number">3.</span> <span class="toc-text">Implementation</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Constructor-1"><span class="toc-number">3.1.</span> <span class="toc-text">Constructor</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Promise-prototype-then"><span class="toc-number">3.2.</span> <span class="toc-text">Promise.prototype.then()</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Promise-Resolution-Procedure"><span class="toc-number">3.3.</span> <span class="toc-text">Promise Resolution Procedure</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Conclusion"><span class="toc-number">4.</span> <span class="toc-text">Conclusion</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Relative-Readings"><span class="toc-number">5.</span> <span class="toc-text">Relative Readings</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://kakavegeta.github.io/2022/04/22/fontend/2022-04-22-javascript-promise/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://kakavegeta.github.io/2022/04/22/fontend/2022-04-22-javascript-promise/&text=Interpret Promise"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://kakavegeta.github.io/2022/04/22/fontend/2022-04-22-javascript-promise/&title=Interpret Promise"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://kakavegeta.github.io/2022/04/22/fontend/2022-04-22-javascript-promise/&is_video=false&description=Interpret Promise"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Interpret Promise&body=Check out this article: https://kakavegeta.github.io/2022/04/22/fontend/2022-04-22-javascript-promise/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://kakavegeta.github.io/2022/04/22/fontend/2022-04-22-javascript-promise/&title=Interpret Promise"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://kakavegeta.github.io/2022/04/22/fontend/2022-04-22-javascript-promise/&title=Interpret Promise"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://kakavegeta.github.io/2022/04/22/fontend/2022-04-22-javascript-promise/&title=Interpret Promise"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://kakavegeta.github.io/2022/04/22/fontend/2022-04-22-javascript-promise/&title=Interpret Promise"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://kakavegeta.github.io/2022/04/22/fontend/2022-04-22-javascript-promise/&name=Interpret Promise&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://kakavegeta.github.io/2022/04/22/fontend/2022-04-22-javascript-promise/&t=Interpret Promise"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2018-2023
+    Vegeka
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/tags/">Tag</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

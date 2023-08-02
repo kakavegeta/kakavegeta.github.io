@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="Sliding Window in detailsA question first: given an array, what is the time complexity of generating all subarrays? Obviously, O(n^2). But what if we do not need to compute all subarrays but some of t">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Sliding Window">
+<meta property="og:url" content="https://kakavegeta.github.io/2020/12/01/2020-12-01-sliding-window/index.html">
+<meta property="og:site_name" content="kakavegeta">
+<meta property="og:description" content="Sliding Window in detailsA question first: given an array, what is the time complexity of generating all subarrays? Obviously, O(n^2). But what if we do not need to compute all subarrays but some of t">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-12-01T05:00:00.000Z">
+<meta property="article:modified_time" content="2023-08-01T22:30:22.149Z">
+<meta property="article:author" content="Vegeka">
+<meta property="article:tag" content="leetcode">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>Sliding Window</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/tags/">Tag</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2020/12/02/os/2020-11-23-instructions-per-cyclde/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2020/11/24/os/2020-11-24-Caching/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://kakavegeta.github.io/2020/12/01/2020-12-01-sliding-window/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://kakavegeta.github.io/2020/12/01/2020-12-01-sliding-window/&text=Sliding Window"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://kakavegeta.github.io/2020/12/01/2020-12-01-sliding-window/&title=Sliding Window"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://kakavegeta.github.io/2020/12/01/2020-12-01-sliding-window/&is_video=false&description=Sliding Window"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Sliding Window&body=Check out this article: https://kakavegeta.github.io/2020/12/01/2020-12-01-sliding-window/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://kakavegeta.github.io/2020/12/01/2020-12-01-sliding-window/&title=Sliding Window"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://kakavegeta.github.io/2020/12/01/2020-12-01-sliding-window/&title=Sliding Window"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://kakavegeta.github.io/2020/12/01/2020-12-01-sliding-window/&title=Sliding Window"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://kakavegeta.github.io/2020/12/01/2020-12-01-sliding-window/&title=Sliding Window"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://kakavegeta.github.io/2020/12/01/2020-12-01-sliding-window/&name=Sliding Window&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://kakavegeta.github.io/2020/12/01/2020-12-01-sliding-window/&t=Sliding Window"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Sliding-Window-in-details"><span class="toc-number">1.</span> <span class="toc-text">Sliding Window in details</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#560-Subarray-Sum-Equals-K"><span class="toc-number">1.0.1.</span> <span class="toc-text">560. Subarray Sum Equals K</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#209-Minimum-Size-Subarray-Sum"><span class="toc-number">1.0.2.</span> <span class="toc-text">209. Minimum Size Subarray Sum</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1248-Count-Number-of-Nice-Subarrays"><span class="toc-number">1.1.</span> <span class="toc-text">1248. Count Number of Nice Subarrays</span></a></li></ol></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        Sliding Window
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">Vegeka</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2020-12-01T05:00:00.000Z" class="dt-published" itemprop="datePublished">2020-12-01</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/Algorithm/">Algorithm</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/leetcode/" rel="tag">leetcode</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h3 id="Sliding-Window-in-details"><a href="#Sliding-Window-in-details" class="headerlink" title="Sliding Window in details"></a>Sliding Window in details</h3><p>A question first: given an array, what is the time complexity of generating all subarrays? Obviously, O(n^2). But what if we do not need to compute all subarrays but some of them which satisfy our specific requirement? The answer is, O(n), but with sliding window(or two pointers) trick.</p>
+<p>Why sliding window can down optimize time complexity? In brief, it reduces the cases we need to test. Let’s start with a simple example.</p>
+<h5 id="560-Subarray-Sum-Equals-K"><a href="#560-Subarray-Sum-Equals-K" class="headerlink" title="560. Subarray Sum Equals K"></a><a target="_blank" rel="noopener" href="https://leetcode.com/problems/subarray-sum-equals-k/">560. Subarray Sum Equals K</a></h5><p>Is this problem can be solved by sliding window? The answer is no. But how about this one:</p>
+<h5 id="209-Minimum-Size-Subarray-Sum"><a href="#209-Minimum-Size-Subarray-Sum" class="headerlink" title="209. Minimum Size Subarray Sum"></a><a target="_blank" rel="noopener" href="https://leetcode.com/problems/minimum-size-subarray-sum/">209. Minimum Size Subarray Sum</a></h5><p>The answer is yes.</p>
+<p>Firstly let’s see why 209 can be solved by sliding window. Given <code>s = 7, nums = [2,3,1,2,4,3]</code> , denote <code>left</code> and <code>right</code> are two pointers. Say not we progress to a case<code>left = 0, right = 4</code>, which is a candidate answer because the sum of this subarray is 8. If we do this problem in brutal force, we need to continue move <code>right</code> forward to end and check whether each case satisfies criterion. But wait, is that necessary? For each <code>left = 0, right &gt; 4</code>, although it satisfies criterion (&gt;&#x3D;7) , it cannot be in smaller size than case <code>left = 0, right = 4</code> . Therefore, there is no need to move <code>right</code> ahead. Instead, the next case we should test is <code>left = 1, right = 4</code> . And this is the magic of why sliding window will reduce time complexity: it reduces the space we need to search!</p>
+<p>Now it is easy to explain why 560 cannot. Given <code>nums = [1,1,1,-1], k = 2</code> , and we progress to a candidate case <code>left  = 0, right = 1</code>. After we find a candidate one, can we stop moving right and begin move left? Absolutely no, because you will lose another candidate case <code>left = 0, right = 3</code>. Therefore, you face an searching space which cannot be shrank.</p>
+<p>In fact, 560 does not specify positive value. If it says every element is positive, then it can be solved by sliding window!</p>
+<p>After figure out the mechanism behind, let’s see some interesting problem which can be solved by sliding window.</p>
+<h4 id="1248-Count-Number-of-Nice-Subarrays"><a href="#1248-Count-Number-of-Nice-Subarrays" class="headerlink" title="1248. Count Number of Nice Subarrays"></a><a target="_blank" rel="noopener" href="https://leetcode.com/problems/count-number-of-nice-subarrays/">1248. Count Number of Nice Subarrays</a></h4><p>behind is subarray sum similar to 560, change odd to 1, even to 0. But why this can be solved by sliding window? Because elements are &gt;&#x3D; 0!</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/categories/">Category</a></li>
+        
+          <li><a href="/tags/">Tag</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Sliding-Window-in-details"><span class="toc-number">1.</span> <span class="toc-text">Sliding Window in details</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#560-Subarray-Sum-Equals-K"><span class="toc-number">1.0.1.</span> <span class="toc-text">560. Subarray Sum Equals K</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#209-Minimum-Size-Subarray-Sum"><span class="toc-number">1.0.2.</span> <span class="toc-text">209. Minimum Size Subarray Sum</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1248-Count-Number-of-Nice-Subarrays"><span class="toc-number">1.1.</span> <span class="toc-text">1248. Count Number of Nice Subarrays</span></a></li></ol></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://kakavegeta.github.io/2020/12/01/2020-12-01-sliding-window/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://kakavegeta.github.io/2020/12/01/2020-12-01-sliding-window/&text=Sliding Window"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://kakavegeta.github.io/2020/12/01/2020-12-01-sliding-window/&title=Sliding Window"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://kakavegeta.github.io/2020/12/01/2020-12-01-sliding-window/&is_video=false&description=Sliding Window"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Sliding Window&body=Check out this article: https://kakavegeta.github.io/2020/12/01/2020-12-01-sliding-window/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://kakavegeta.github.io/2020/12/01/2020-12-01-sliding-window/&title=Sliding Window"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://kakavegeta.github.io/2020/12/01/2020-12-01-sliding-window/&title=Sliding Window"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://kakavegeta.github.io/2020/12/01/2020-12-01-sliding-window/&title=Sliding Window"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://kakavegeta.github.io/2020/12/01/2020-12-01-sliding-window/&title=Sliding Window"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://kakavegeta.github.io/2020/12/01/2020-12-01-sliding-window/&name=Sliding Window&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://kakavegeta.github.io/2020/12/01/2020-12-01-sliding-window/&t=Sliding Window"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2018-2023
+    Vegeka
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/tags/">Tag</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

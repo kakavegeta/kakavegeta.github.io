@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="std::function is a function wrapper, and it’s instance is able to store, copy, and invoke any CopyConstructible Callable target, such as functions, lambda expression, bind expressions, or other functi">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Simple Implement of Class Template std::function">
+<meta property="og:url" content="https://kakavegeta.github.io/2021/03/27/2021-03-27-template-class-function/index.html">
+<meta property="og:site_name" content="kakavegeta">
+<meta property="og:description" content="std::function is a function wrapper, and it’s instance is able to store, copy, and invoke any CopyConstructible Callable target, such as functions, lambda expression, bind expressions, or other functi">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-03-27T04:00:00.000Z">
+<meta property="article:modified_time" content="2023-08-01T22:16:01.870Z">
+<meta property="article:author" content="Vegeka">
+<meta property="article:tag" content="c++">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>Simple Implement of Class Template std::function</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/tags/">Tag</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2022/04/17/marx/2022-04-17-capital-volume1-chapter1t3/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2021/01/25/2021-01-25-string-matching-shift-and-algorithm/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://kakavegeta.github.io/2021/03/27/2021-03-27-template-class-function/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://kakavegeta.github.io/2021/03/27/2021-03-27-template-class-function/&text=Simple Implement of Class Template std::function"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://kakavegeta.github.io/2021/03/27/2021-03-27-template-class-function/&title=Simple Implement of Class Template std::function"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://kakavegeta.github.io/2021/03/27/2021-03-27-template-class-function/&is_video=false&description=Simple Implement of Class Template std::function"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Simple Implement of Class Template std::function&body=Check out this article: https://kakavegeta.github.io/2021/03/27/2021-03-27-template-class-function/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://kakavegeta.github.io/2021/03/27/2021-03-27-template-class-function/&title=Simple Implement of Class Template std::function"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://kakavegeta.github.io/2021/03/27/2021-03-27-template-class-function/&title=Simple Implement of Class Template std::function"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://kakavegeta.github.io/2021/03/27/2021-03-27-template-class-function/&title=Simple Implement of Class Template std::function"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://kakavegeta.github.io/2021/03/27/2021-03-27-template-class-function/&title=Simple Implement of Class Template std::function"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://kakavegeta.github.io/2021/03/27/2021-03-27-template-class-function/&name=Simple Implement of Class Template std::function&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://kakavegeta.github.io/2021/03/27/2021-03-27-template-class-function/&t=Simple Implement of Class Template std::function"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        Simple Implement of Class Template std::function
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">Vegeka</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2021-03-27T04:00:00.000Z" class="dt-published" itemprop="datePublished">2021-03-27</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/CPP/">CPP</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/c/" rel="tag">c++</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p><code>std::function</code> is a function wrapper, and it’s instance is able to store, copy, and invoke any CopyConstructible Callable target, such as functions, lambda expression, bind expressions, or other function objects, as well as pointers to member functions and pointers to data members.</p>
+<p>This post implements a similar template class <code>function&lt;&gt;</code> which can store, copy and invoke any function object. It is an review and practice for how to build template class and how to interpret polymorphism.</p>
+<p>For one thing, our task is to build a template class which can act as a wrapper as below:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// we define a function and a class which overriding function call operator</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">add</span><span class="params">(<span class="type">int</span> a, <span class="type">int</span> b)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a + b;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Add</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">operator</span><span class="params">()</span><span class="params">(<span class="type">int</span> a, <span class="type">int</span> b)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> a + b;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Add add_class;</span><br><span class="line">    function&lt;<span class="type">void</span>(<span class="type">int</span>, <span class="type">int</span>)&gt; f1 = add;</span><br><span class="line">    function&lt;<span class="type">void</span>(<span class="type">int</span>, <span class="type">int</span>)&gt; f2 = add_class;</span><br><span class="line">    std::cout &lt;&lt; <span class="built_in">f1</span>(<span class="number">1</span>, <span class="number">2</span>) &lt;&lt; <span class="string">&quot; &quot;</span> <span class="built_in">f2</span>(<span class="number">3</span>, <span class="number">4</span>) &lt;&lt; std::endl;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Here polymorphism comes in! So we need to build a class <code>Base</code> with a <strong>pure virtual</strong> function <code>run()</code> which is used to bind function and class overriding <code>()</code> operator. Why <strong>pure virtual</strong> function? Since as we call <code>function&lt;void(int ,int)&gt; f1 = add</code>, we want <code>run()</code> goes with object <code>add</code> instead of class <code>function</code> .</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> ...ARGS&gt;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Base</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> T <span class="title">run</span><span class="params">(ARGS...)</span> </span>= <span class="number">0</span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>Then let’s cerate a derived class from <code>Base</code> which binds to functions. The reason of using <code>forward&lt;&gt;</code> is that we need template class know exactly what we pass, without deducing by it self.</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> ...ARGS&gt;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Func</span> : <span class="keyword">public</span> Base&lt;T, ARGS...&gt; &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">typedef</span> <span class="title">T</span> <span class="params">(*FUNC_T)</span><span class="params">(ARGS...)</span></span>;</span><br><span class="line">    <span class="built_in">Func</span>(FUNC_T func) : <span class="built_in">func</span>(func) &#123;&#125;</span><br><span class="line">    <span class="function">T <span class="title">run</span><span class="params">(ARGS ...args)</span> <span class="keyword">override</span> </span>&#123;</span><br><span class="line">       <span class="keyword">return</span> <span class="built_in">func</span>(std::forward&lt;ARGS&gt;(args)...);</span><br><span class="line">    &#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    FUNC_T func;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>Similarly, another derived class which binds to class overriding <code>()</code> operator, or FunctionObject</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> C, <span class="keyword">typename</span> T, <span class="keyword">typename</span> ...ARGS&gt;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">FuncObj</span> : <span class="keyword">public</span> Base&lt;T, ARGS...&gt; &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">FuncObj</span>(C &amp;&amp;obj) : <span class="built_in">obj</span>(obj) &#123;&#125;</span><br><span class="line">    <span class="function">T <span class="title">run</span><span class="params">(ARGS ...args)</span> <span class="keyword">override</span> </span>&#123;</span><br><span class="line">       <span class="keyword">return</span> <span class="built_in">obj</span>(std::forward&lt;ARGS&gt;(args)...);</span><br><span class="line">    &#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    C obj; <span class="comment">// std::function&lt;&gt; make copy instead of reference</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>Now let’s create class template <code>function</code></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> ...ARGS&gt; <span class="keyword">class</span> <span class="title class_">function</span>;</span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> ...ARGS&gt;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">function</span>&lt;<span class="built_in">T</span>(ARGS...)&gt; &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">function</span>(<span class="built_in">T</span> (*ptr)(ARGS...)) : <span class="built_in">fptr</span>(<span class="keyword">new</span> <span class="built_in">Func</span>&lt;T, ARGS...&gt;(ptr)) &#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> C&gt;</span></span><br><span class="line"><span class="function">    <span class="title">function</span><span class="params">(C obj)</span> : fptr(new FuncObj&lt;C, T, ARGS...&gt;(obj)) &#123;</span>&#125;;</span><br><span class="line"></span><br><span class="line">    <span class="function">T <span class="title">operator</span><span class="params">()</span><span class="params">(ARGS ...args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> fptr-&gt;<span class="built_in">run</span>(std::forward&lt;ARGS&gt;(args)...);</span><br><span class="line">    &#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    Base&lt;T, ARGS...&gt; *fptr;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>It’s done!</p>
+<p>all codes:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;functional&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> ...ARGS&gt;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Base</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> T <span class="title">run</span><span class="params">(ARGS...)</span> </span>= <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> ...ARGS&gt;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Func</span> : <span class="keyword">public</span> Base&lt;T, ARGS...&gt; &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">typedef</span> <span class="title">T</span> <span class="params">(*FUNC_T)</span><span class="params">(ARGS...)</span></span>;</span><br><span class="line">    <span class="built_in">Func</span>(FUNC_T func) : <span class="built_in">func</span>(func) &#123;&#125;</span><br><span class="line">    <span class="function">T <span class="title">run</span><span class="params">(ARGS ...args)</span> <span class="keyword">override</span> </span>&#123;</span><br><span class="line">       <span class="keyword">return</span> <span class="built_in">func</span>(std::forward&lt;ARGS&gt;(args)...);</span><br><span class="line">    &#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    FUNC_T func;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> C, <span class="keyword">typename</span> T, <span class="keyword">typename</span> ...ARGS&gt;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">FuncObj</span> : <span class="keyword">public</span> Base&lt;T, ARGS...&gt; &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">FuncObj</span>(C &amp;&amp;obj) : <span class="built_in">obj</span>(obj) &#123;&#125;</span><br><span class="line">    <span class="function">T <span class="title">run</span><span class="params">(ARGS ...args)</span> <span class="keyword">override</span> </span>&#123;</span><br><span class="line">       <span class="keyword">return</span> <span class="built_in">obj</span>(std::forward&lt;ARGS&gt;(args)...);</span><br><span class="line">    &#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    C obj;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> ...ARGS&gt; <span class="keyword">class</span> <span class="title class_">function</span>;</span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> ...ARGS&gt;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">function</span>&lt;<span class="built_in">T</span>(ARGS...)&gt; &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">function</span>(<span class="built_in">T</span> (*ptr)(ARGS...)) : <span class="built_in">fptr</span>(<span class="keyword">new</span> <span class="built_in">Func</span>&lt;T, ARGS...&gt;(ptr)) &#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> C&gt;</span></span><br><span class="line"><span class="function">    <span class="title">function</span><span class="params">(C obj)</span> : fptr(new FuncObj&lt;C, T, ARGS...&gt;(obj)) &#123;</span>&#125;;</span><br><span class="line"></span><br><span class="line">    <span class="function">T <span class="title">operator</span><span class="params">()</span><span class="params">(ARGS ...args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> fptr-&gt;<span class="built_in">run</span>(std::forward&lt;ARGS&gt;(args)...);</span><br><span class="line">    &#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    Base&lt;T, ARGS...&gt; *fptr;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">add</span><span class="params">(<span class="type">int</span> a, <span class="type">int</span> b)</span> </span>&#123;</span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;normal function &quot;</span> &lt;&lt; std::endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Add</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">Add</span>() : x&#123;<span class="number">0</span>&#125; &#123;&#125;;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">operator</span><span class="params">()</span><span class="params">(<span class="type">int</span> a, <span class="type">int</span> b)</span> </span>&#123;</span><br><span class="line">        x += a + b;</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;class object : &quot;</span> &lt;&lt; x  &lt;&lt; std::endl;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">int</span> x;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Add add_obj;</span><br><span class="line">    std::function&lt;<span class="type">void</span>(<span class="type">int</span>, <span class="type">int</span>)&gt; f1 = add;</span><br><span class="line">    std::function&lt;<span class="type">void</span>(<span class="type">int</span>, <span class="type">int</span>)&gt; f2 = add_obj;</span><br><span class="line">    <span class="built_in">f1</span>(<span class="number">1</span>, <span class="number">2</span>);</span><br><span class="line">    <span class="built_in">f2</span>(<span class="number">3</span>, <span class="number">4</span>);</span><br><span class="line">    <span class="built_in">f2</span>(<span class="number">5</span>, <span class="number">6</span>);</span><br><span class="line">    function&lt;<span class="type">void</span>(<span class="type">int</span>, <span class="type">int</span>)&gt; f3 = add;</span><br><span class="line">    function&lt;<span class="type">void</span>(<span class="type">int</span>, <span class="type">int</span>)&gt; f4 = add_obj;</span><br><span class="line">    <span class="built_in">f3</span>(<span class="number">1</span>, <span class="number">2</span>);</span><br><span class="line">    <span class="built_in">f4</span>(<span class="number">3</span>, <span class="number">4</span>);</span><br><span class="line">    <span class="built_in">f4</span>(<span class="number">5</span>, <span class="number">6</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/categories/">Category</a></li>
+        
+          <li><a href="/tags/">Tag</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://kakavegeta.github.io/2021/03/27/2021-03-27-template-class-function/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://kakavegeta.github.io/2021/03/27/2021-03-27-template-class-function/&text=Simple Implement of Class Template std::function"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://kakavegeta.github.io/2021/03/27/2021-03-27-template-class-function/&title=Simple Implement of Class Template std::function"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://kakavegeta.github.io/2021/03/27/2021-03-27-template-class-function/&is_video=false&description=Simple Implement of Class Template std::function"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Simple Implement of Class Template std::function&body=Check out this article: https://kakavegeta.github.io/2021/03/27/2021-03-27-template-class-function/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://kakavegeta.github.io/2021/03/27/2021-03-27-template-class-function/&title=Simple Implement of Class Template std::function"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://kakavegeta.github.io/2021/03/27/2021-03-27-template-class-function/&title=Simple Implement of Class Template std::function"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://kakavegeta.github.io/2021/03/27/2021-03-27-template-class-function/&title=Simple Implement of Class Template std::function"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://kakavegeta.github.io/2021/03/27/2021-03-27-template-class-function/&title=Simple Implement of Class Template std::function"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://kakavegeta.github.io/2021/03/27/2021-03-27-template-class-function/&name=Simple Implement of Class Template std::function&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://kakavegeta.github.io/2021/03/27/2021-03-27-template-class-function/&t=Simple Implement of Class Template std::function"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2018-2023
+    Vegeka
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/tags/">Tag</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>
