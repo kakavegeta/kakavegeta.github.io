@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="This post will briefly discuss the mechanism of JavaScript runtime, and three ways to implement asynchronous programming in JavaScript. Event LoopAlthough it is not strictly correct that JavaScript is">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Javascript Asynchronous Programming">
+<meta property="og:url" content="https://kakavegeta.github.io/2023/08/05/programming/2023-08-04-js-async/index.html">
+<meta property="og:site_name" content="kakavegeta">
+<meta property="og:description" content="This post will briefly discuss the mechanism of JavaScript runtime, and three ways to implement asynchronous programming in JavaScript. Event LoopAlthough it is not strictly correct that JavaScript is">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2023-08-05T04:00:00.000Z">
+<meta property="article:modified_time" content="2023-08-12T06:31:26.638Z">
+<meta property="article:author" content="Vegeka">
+<meta property="article:tag" content="javascript">
+<meta property="article:tag" content="asynchronous">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>Javascript Asynchronous Programming</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/tags/">Tag</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2023/05/11/history/2023-05-11-wanganshi-reform-qingmiao/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://kakavegeta.github.io/2023/08/05/programming/2023-08-04-js-async/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://kakavegeta.github.io/2023/08/05/programming/2023-08-04-js-async/&text=Javascript Asynchronous Programming"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://kakavegeta.github.io/2023/08/05/programming/2023-08-04-js-async/&title=Javascript Asynchronous Programming"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://kakavegeta.github.io/2023/08/05/programming/2023-08-04-js-async/&is_video=false&description=Javascript Asynchronous Programming"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Javascript Asynchronous Programming&body=Check out this article: https://kakavegeta.github.io/2023/08/05/programming/2023-08-04-js-async/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://kakavegeta.github.io/2023/08/05/programming/2023-08-04-js-async/&title=Javascript Asynchronous Programming"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://kakavegeta.github.io/2023/08/05/programming/2023-08-04-js-async/&title=Javascript Asynchronous Programming"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://kakavegeta.github.io/2023/08/05/programming/2023-08-04-js-async/&title=Javascript Asynchronous Programming"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://kakavegeta.github.io/2023/08/05/programming/2023-08-04-js-async/&title=Javascript Asynchronous Programming"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://kakavegeta.github.io/2023/08/05/programming/2023-08-04-js-async/&name=Javascript Asynchronous Programming&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://kakavegeta.github.io/2023/08/05/programming/2023-08-04-js-async/&t=Javascript Asynchronous Programming"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Event-Loop"><span class="toc-number">1.</span> <span class="toc-text">Event Loop</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Callback"><span class="toc-number">2.</span> <span class="toc-text">Callback</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Promise"><span class="toc-number">3.</span> <span class="toc-text">Promise</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Async-await"><span class="toc-number">4.</span> <span class="toc-text">Async&#x2F;await</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Afterword"><span class="toc-number">5.</span> <span class="toc-text">Afterword</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Reference"><span class="toc-number">6.</span> <span class="toc-text">Reference</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        Javascript Asynchronous Programming
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">Vegeka</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2023-08-05T04:00:00.000Z" class="dt-published" itemprop="datePublished">2023-08-05</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/Programming/">Programming</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/asynchronous/" rel="tag">asynchronous</a>, <a class="p-category" href="/tags/javascript/" rel="tag">javascript</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>This post will briefly discuss the mechanism of JavaScript runtime, and three ways to implement asynchronous programming in JavaScript.</p>
+<h2 id="Event-Loop"><a href="#Event-Loop" class="headerlink" title="Event Loop"></a>Event Loop</h2><p>Although it is not strictly correct that JavaScript is a single-threaded laungage because either in Browser or Nodejs there might be multiple threads running, JavaScipt script is truly executed in a single thread in runtime, which means it can only do one thing at a time. In intuition then, how it can be asynchronous? The key is <strong><em>Event Loop</em></strong>, a never-bloking and endless loop which keeps <code>waiting -&gt; checking -&gt; executing -&gt; waiting</code> tasks from a message queue. It looks like this:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">while (queue.waitForMessage()) &#123;</span><br><span class="line">  queue.processNextMessage();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>In JavaSsript, whenever a function runs, it is not executed immediately until all other previous functions are completed. JavaScript uses a message queue to store tasks to be processed. In Browser, for example, when you click a button, the event listener just put the function triggered by the click to the message queue. Only after all functions pre-enqueued are processed, this functions will be executed. So the answer to the counter-intuition is: JavaScript implements asynchroncity by manipulating the order of codes processing.</p>
+<p>Begin with a simple example:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="number">1</span>);</span><br><span class="line"><span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="number">2</span>);</span><br><span class="line">&#125;, <span class="number">0</span>);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="number">3</span>);</span><br></pre></td></tr></table></figure>
+
+<p>Output:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1</span><br><span class="line">3</span><br><span class="line">2</span><br></pre></td></tr></table></figure>
+
+<p>Above is a very simple asynchronous example. <code>setTimeout()</code> is the key here. It puts <code>console.log(2)</code> into message queue, whereas <code>console.log(3)</code> is put into stack and excuted immediately, even if I set second argument as <code>0</code>. After stack is empty, event loop checks tasks in queue, and finds <code>console.log(2)</code> , and then puts it to stack to be processed.</p>
+<p>A practice given JavaScript runtime modle is that do not try to make one function takes too long.</p>
+<p>After ES6, there are three ways to implement asynchronous programming in JavaScript: Callback, Promise, and Async&#x2F;await</p>
+<h2 id="Callback"><a href="#Callback" class="headerlink" title="Callback"></a>Callback</h2><p>A callback is a function passed into another function as an argument by which it is then invoked inside the outer function to complete some kind of routine or action. A callback fuction can be called in either sync or async ways. Here is an example to tell the difference:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">barSync</span>(<span class="params">val, callback</span>) &#123;</span><br><span class="line">  <span class="title function_">callback</span>(val);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">barAsycnc</span>(<span class="params">val, callback</span>) &#123;</span><br><span class="line">  <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="title function_">callback</span>(val);</span><br><span class="line">  &#125;, <span class="number">0</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">myCallback</span>(<span class="params">val</span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(val);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="number">1</span>);</span><br><span class="line"><span class="title function_">barSync</span>(<span class="number">2</span>, myCallback);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="number">3</span>);</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;---&quot;</span>);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="number">1</span>);</span><br><span class="line"><span class="title function_">barAsycnc</span>(<span class="number">2</span>, myCallback);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="number">3</span>);</span><br></pre></td></tr></table></figure>
+
+<p>Output:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">---</span><br><span class="line">1</span><br><span class="line">3</span><br><span class="line">2</span><br></pre></td></tr></table></figure>
+
+<p>However, in asynchronous context, the callback should be called whenever the outer function’s asynchronous process is done. Usually, the result from outer function is passed to the callback. One example from <code>fs.readFile</code> (I created a file named a.txt with content “Hello World”):</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> fs = <span class="built_in">require</span>(<span class="string">&quot;fs&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> content;</span><br><span class="line"></span><br><span class="line">fs.<span class="title function_">readFile</span>(<span class="string">&quot;./a.txt&quot;</span>, <span class="string">&quot;utf-8&quot;</span>, <span class="function">(<span class="params">err, val</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;val: &quot;</span>, val);</span><br><span class="line">  content = val;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;content: &quot;</span>, content);</span><br></pre></td></tr></table></figure>
+
+<p>Output:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">content: undefined</span><br><span class="line">val: Hello World</span><br></pre></td></tr></table></figure>
+
+<p>The callback passed to <code>fs.readFile</code> prints the content of file and assign it to <code>content</code>, but given the output variable <code>content</code> is not assigned. That is asynchronous: the callback is not processed immediately while other functions are processed before it. Only after <code>fs.readFile</code> gets results, and callback becomes the first element in message queue, the callback can be processed.</p>
+<h2 id="Promise"><a href="#Promise" class="headerlink" title="Promise"></a>Promise</h2><p>Callback Hell is a “well-known” style in JavaScript. It is common to nest 3 or more callbacks given each callback rely on previous callback, which makes the code unreadable, especially when comming into error handling. Then people come up with <code>Promise</code> that became standard in ES6. There are numerous tutorials about <code>Promise</code>, here just give a single example of how <code>Promise</code> performs asynchronous operation.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> square = <span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="function">(<span class="params">resolve</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="title function_">resolve</span>(<span class="number">1</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">square</span><br><span class="line">  .<span class="title function_">then</span>(<span class="function">(<span class="params">val</span>) =&gt;</span> <span class="title class_">Promise</span>.<span class="title function_">resolve</span>(val * <span class="number">2</span>))</span><br><span class="line">  .<span class="title function_">then</span>(<span class="function">(<span class="params">val</span>) =&gt;</span> <span class="title class_">Promise</span>.<span class="title function_">resolve</span>(val * <span class="number">2</span>))</span><br><span class="line">  .<span class="title function_">then</span>(<span class="function">(<span class="params">val</span>) =&gt;</span> <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;async...&quot;</span>, val))</span><br><span class="line">  .<span class="title function_">catch</span>(<span class="function">(<span class="params">err</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;Error: &quot;</span> + err);</span><br><span class="line">  &#125;)</span><br><span class="line">  .<span class="title function_">finally</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;promise done&quot;</span>);</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;sync...&quot;</span>, square);</span><br></pre></td></tr></table></figure>
+
+<p>Output:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sync... Promise &#123; 1 &#125;</span><br><span class="line">async... 4</span><br><span class="line">promise done</span><br></pre></td></tr></table></figure>
+
+<p>This is a simple example to calculate 2*2. Compared to multi-leveled callbacks, it is more elegant. You can do infinite asynchronous operatios in <code>.then()</code> by chaining forever. And you no longer to nest error handling in callback, while you can just use <code>.catch()</code> to handle the first error encountered in <code>.then()</code> chain.</p>
+<h2 id="Async-await"><a href="#Async-await" class="headerlink" title="Async&#x2F;await"></a>Async&#x2F;await</h2><p>Then what is a more elegant way without <code>.then()</code> chain because it might be still awkward looking? Here comes <code>async/await</code> . Still there are many tutorials so that here just giving an example of how to handle asynchronous operation through <code>async/await</code></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> num = <span class="keyword">function</span> (<span class="params">val</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="function">(<span class="params">resolve</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="title function_">resolve</span>(val);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 2 * val</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">double</span>(<span class="params">val</span>) &#123;</span><br><span class="line">  <span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> res = <span class="keyword">await</span> <span class="title function_">num</span>(val);</span><br><span class="line">    <span class="keyword">return</span> res * <span class="number">2</span>;</span><br><span class="line">  &#125; <span class="keyword">catch</span> (error) &#123;</span><br><span class="line">    <span class="keyword">throw</span> error;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// sequential execution</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">seq</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> a = <span class="keyword">await</span> <span class="title function_">num</span>(<span class="number">1</span>);</span><br><span class="line">    <span class="keyword">let</span> b = <span class="keyword">await</span> <span class="title function_">num</span>(<span class="number">2</span>);</span><br><span class="line">    <span class="keyword">let</span> c = <span class="keyword">await</span> <span class="title function_">num</span>(<span class="number">3</span>);</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;seq: &quot;</span>, a, b, c);</span><br><span class="line">  &#125; <span class="keyword">catch</span> (error) &#123;</span><br><span class="line">    <span class="keyword">throw</span> error;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// concurrent execution</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">concur</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> result = <span class="keyword">await</span> <span class="title class_">Promise</span>.<span class="title function_">all</span>([<span class="title function_">num</span>(<span class="number">1</span>), <span class="title function_">num</span>(<span class="number">2</span>), <span class="title function_">num</span>(<span class="number">3</span>)]);</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;concur: &quot;</span>, result);</span><br><span class="line">  &#125; <span class="keyword">catch</span> (error) &#123;</span><br><span class="line">    <span class="keyword">throw</span> error;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">(<span class="keyword">async</span> <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">let</span> result = <span class="keyword">await</span> <span class="title function_">double</span>(<span class="number">5</span>);</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`2 * 5 = `</span>, result);</span><br><span class="line">&#125;)();</span><br><span class="line"></span><br><span class="line"><span class="title function_">seq</span>();</span><br><span class="line"><span class="title function_">concur</span>();</span><br></pre></td></tr></table></figure>
+
+<p>Output:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">2 * 5 = 10</span><br><span class="line">concur:  [ 1, 2, 3 ]</span><br><span class="line">seq:  1 2 3</span><br></pre></td></tr></table></figure>
+
+<p>Above is a simple example of <code>async/await</code> usage. In brief, <code>async function</code> returns a <code>Promise</code>; <code>await</code> blocks execution until the promise is resolved or rejected by which it mimics synchronouse operation, and returns the resolved value, while error is catched through <code>try...catch...</code>.</p>
+<p>In addition, it is elegant to perform concurrency by <code>Promise.all()</code>. You see <code>concur()</code> is printed before <code>seq()</code>. The reason is, although <code>seq()</code> is called firstly, it needs to resolve 3 promises one by one, while <code>concur()</code> resolve the 3 promises at once(not an accurate description but at lease looks like). Thus <code>concur()</code> returns before <code>seq()</code>.</p>
+<h2 id="Afterword"><a href="#Afterword" class="headerlink" title="Afterword"></a>Afterword</h2><p><code>Promise</code> and <code>async/awiat</code> do give us an easier way to write asychronous codes. However, it trades detailed control for elegancy. In callback you can deal with whatever you want, whereas <code>Promise</code> and <code>async/awiat</code> reduce many details. It might be ok when project is not too complicated, but it does have drawbacks. This is a large topic and will be discussed in future post.</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Event_loop#event_loop">The Event Loop</a><br><a target="_blank" rel="noopener" href="https://javascript.info/event-loop">Event loop: microtasks and macrotasks</a><br><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/2734025/is-javascript-guaranteed-to-be-single-threaded">Is JavaScript guaranteed to be single-threaded?</a><br><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=8aGhZQkoFbQ">What the heck event loop is (video)</a></p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/tags/">Tag</a></li>
+        
+          <li><a href="/categories/">Category</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Event-Loop"><span class="toc-number">1.</span> <span class="toc-text">Event Loop</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Callback"><span class="toc-number">2.</span> <span class="toc-text">Callback</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Promise"><span class="toc-number">3.</span> <span class="toc-text">Promise</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Async-await"><span class="toc-number">4.</span> <span class="toc-text">Async&#x2F;await</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Afterword"><span class="toc-number">5.</span> <span class="toc-text">Afterword</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Reference"><span class="toc-number">6.</span> <span class="toc-text">Reference</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://kakavegeta.github.io/2023/08/05/programming/2023-08-04-js-async/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://kakavegeta.github.io/2023/08/05/programming/2023-08-04-js-async/&text=Javascript Asynchronous Programming"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://kakavegeta.github.io/2023/08/05/programming/2023-08-04-js-async/&title=Javascript Asynchronous Programming"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://kakavegeta.github.io/2023/08/05/programming/2023-08-04-js-async/&is_video=false&description=Javascript Asynchronous Programming"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Javascript Asynchronous Programming&body=Check out this article: https://kakavegeta.github.io/2023/08/05/programming/2023-08-04-js-async/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://kakavegeta.github.io/2023/08/05/programming/2023-08-04-js-async/&title=Javascript Asynchronous Programming"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://kakavegeta.github.io/2023/08/05/programming/2023-08-04-js-async/&title=Javascript Asynchronous Programming"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://kakavegeta.github.io/2023/08/05/programming/2023-08-04-js-async/&title=Javascript Asynchronous Programming"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://kakavegeta.github.io/2023/08/05/programming/2023-08-04-js-async/&title=Javascript Asynchronous Programming"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://kakavegeta.github.io/2023/08/05/programming/2023-08-04-js-async/&name=Javascript Asynchronous Programming&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://kakavegeta.github.io/2023/08/05/programming/2023-08-04-js-async/&t=Javascript Asynchronous Programming"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2020-2023
+    Vegeka
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/tags/">Tag</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>
